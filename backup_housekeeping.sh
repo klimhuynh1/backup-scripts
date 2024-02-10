@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Source the .env file to set the environment variables
-source /usr/local/bin/restic.env
-source /usr/local/bin/gotify.env
+source /usr/local/bin/backup-scripts/restic.env
+source /usr/local/bin/backup-scripts/gotify.env
 
 CLEANUP_APPDATA_CHECK=false
-LOG_FILE="/usr/local/bin/cleanup.log"
+LOG_FILE="/usr/local/bin/backup-scripts/housekeeping.log"
 PRIORITY=5
 
 # Manually unlock repo

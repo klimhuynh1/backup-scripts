@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Source the .env file to set environment variables
-source /usr/local/bin/restic.env
-source /usr/local/bin/gotify.env
+source /usr/local/bin/backup-scripts/restic.env
+source /usr/local/bin/backup-scripts/gotify.env
 
 BACKUP_APPDATA_CHECK=false
 BACKUP_TITLE_APPDATA="Restic appdata backup"
-LOG_FILE="/usr/local/bin/backup.log"
+LOG_FILE="/usr/local/bin/backup-scripts/backup.log"
 PRIORITY=5
 
 # Manually unlock repo
