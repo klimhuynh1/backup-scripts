@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Source the .env file to set the environment variables
-source /usr/local/bin/restic.env
-source /usr/local/bin/gotify.env
+source ./restic.env
+source ./gotify.env
 
 CLEANUP_APPDATA_CHECK=false
 LOG_FILE="/usr/local/bin/cleanup.log"

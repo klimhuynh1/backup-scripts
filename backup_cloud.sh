@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Source the .env file to set environment variables
-source /usr/local/bin/restic.env
-source /usr/local/bin/gotify.env
+source ./restic.env
+source ./gotify.env
 
 BACKUP_APPDATA_CHECK=false
 BACKUP_TITLE_APPDATA="Restic appdata backup"
