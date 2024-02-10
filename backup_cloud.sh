@@ -24,7 +24,6 @@ else
     echo "$(date +'%Y-%m-%d %H:%M:%S') - $BACKUP_TITLE_APPDATA was not successful." >> "$LOG_FILE"
 fi
 
-
 if [ "$BACKUP_APPDATA_CHECK" = true ]; then
     TITLE="Backup Successful"
     MESSAGE="Your data has been successfully backed up."
@@ -38,5 +37,5 @@ curl -s -S --data '{"message": "'"${MESSAGE}"'", "title": "'"${TITLE}"'", "prior
 # Check if it's Sunday
 if [ "$(date +'%u')" = "7" ]; then
     # Prune restic snapshots
-    /usr/local/bin/restic_cleanup.sh
+    ./backup_housekeeping.sh
 fi
