@@ -12,7 +12,7 @@ PRIORITY=5
 restic -r /mnt/exdisk/restic-appdata --verbose unlock
 
 # Removing snapshots according to a policy
-restic -r /mnt/exdisk/restic-appdata --verbose forget --keep-last 1 --keep-daily 7 --keep-weekly 4 --keep-monthly 6 --prune
+restic -r /mnt/exdisk/restic-appdata --verbose forget --keep-last 1 --keep-daily 7 --keep-weekly 4 --prune
 
 # Check the exit status
 if [ $? -eq 0 ]; then
@@ -25,11 +25,11 @@ else
 fi
 
 if [ "$CLEANUP_APPDATA_CHECK" = true ]; then
-    TITLE="Restic Clean Up Successful"
-    MESSAGE="The clean up process for Restic snapshots completed successfully."
+    TITLE="Housekeeping Successful"
+    MESSAGE="The housekeeping process was completed successfully."
 else
-    TITLE="Restic Clean Up Failed"
-    MESSAGE="There was an issue with the Restic cleanup process. Please check the logs for more details."
+    TITLE="Housekeeping Failed"
+    MESSAGE="There was an issue with the housekeeping process. Please check the logs for more details."
 fi
 
 curl -s -S --data '{"message": "'"${MESSAGE}"'", "title": "'"${TITLE}"'", "priority":'"${PRIORITY}"', "extras": {"client::display": {"contentType": "text/markdown"}}}' -H 'Content-Type: application/json' "$URL"
