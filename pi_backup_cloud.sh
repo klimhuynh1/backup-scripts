@@ -15,7 +15,7 @@ PRIORITY=5
 restic -r /mnt/exdisk/restic-appdata --verbose unlock
 
 # Sync local and remote repos
-rclone sync --verbose /mnt/exdisk/restic-appdata/ mymegadrive:restic-appdata-mnfll
+rclone sync --verbose /mnt/exdisk/restic-appdata/ mymegadrive:restic-nucleus-appdata
 
 # Check the exit status of rclone
 if [ $? -eq 0 ]; then
@@ -30,7 +30,7 @@ fi
 restic -r /mnt/exdisk/restic-dashcam --verbose unlock
 
 # Sync local and remote repos
-rclone sync --verbose /mnt/exdisk/restic-dashcam/ mymegadrive:restic-dashcam-mnfll
+rclone sync --verbose /mnt/exdisk/restic-dashcam/ mymegadrive:restic-nucleus-dashcam
 
 # Check the exit status of rclone
 if [ $? -eq 0 ]; then
