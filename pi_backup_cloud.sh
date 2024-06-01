@@ -12,10 +12,10 @@ LOG_FILE="/usr/local/bin/backup-scripts/backup.log"
 PRIORITY=5
 
 # Manually unlock repo
-restic -r /mnt/exdisk/restic-appdata --verbose unlock
+restic -r /mnt/exdisk/nucleus-restic-appdata --verbose unlock
 
 # Sync local and remote repos
-rclone sync --verbose /mnt/exdisk/restic-appdata/ mymegadrive:restic-nucleus-appdata
+rclone sync --verbose /mnt/exdisk/nucleus-restic-appdata/ mymegadrive:nucleus-restic-appdata
 
 # Check the exit status of rclone
 if [ $? -eq 0 ]; then
@@ -27,10 +27,10 @@ else
 fi
 
 # Manually unlock repo
-restic -r /mnt/exdisk/restic-dashcam --verbose unlock
+restic -r /mnt/exdisk/nucleus-restic-dashcam --verbose unlock
 
 # Sync local and remote repos
-rclone sync --verbose /mnt/exdisk/restic-dashcam/ mymegadrive:restic-nucleus-dashcam
+rclone sync --verbose /mnt/exdisk/nucleus-restic-dashcam/ mymegadrive:nucleus-restic-dashcam
 
 # Check the exit status of rclone
 if [ $? -eq 0 ]; then
@@ -42,10 +42,10 @@ else
 fi
 
 if [ "$BACKUP_APPDATA_CHECK" = true ] && [ "$BACKUP_DASHCAM_CHECK" = true ]; then
-    TITLE="Backup Successful"
+    TITLE="Nucleus Backup Successful"
     MESSAGE="Your data has been successfully backed up."
 else
-    TITLE="Backup Failed"
+    TITLE="Nucleus Backup Failed"
     MESSAGE="There was an issue with the backup process. Please check the logs for more details."
 fi
 

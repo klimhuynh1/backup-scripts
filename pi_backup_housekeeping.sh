@@ -9,10 +9,10 @@ LOG_FILE="/usr/local/bin/backup-scripts/housekeeping.log"
 PRIORITY=5
 
 # Manually unlock repo
-restic -r /mnt/exdisk/restic-appdata --verbose unlock
+restic -r /mnt/exdisk/nucleus-restic-appdata --verbose unlock
 
 # Removing snapshots according to a policy
-restic -r /mnt/exdisk/restic-appdata --verbose forget --keep-last 1 --keep-daily 7 --keep-weekly 4 --prune
+restic -r /mnt/exdisk/nucleus-restic-appdata --verbose forget --keep-last 1 --keep-daily 7 --keep-weekly 4 --prune
 
 # Check the exit status
 if [ $? -eq 0 ]; then
@@ -25,10 +25,10 @@ else
 fi
 
 if [ "$CLEANUP_APPDATA_CHECK" = true ]; then
-    TITLE="Housekeeping Successful"
+    TITLE="Nucleus Housekeeping Successful"
     MESSAGE="The housekeeping process was completed successfully."
 else
-    TITLE="Housekeeping Failed"
+    TITLE="Nucleus Housekeeping Failed"
     MESSAGE="There was an issue with the housekeeping process. Please check the logs for more details."
 fi
 
