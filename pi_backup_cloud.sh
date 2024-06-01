@@ -5,7 +5,9 @@ source /usr/local/bin/backup-scripts/restic.env
 source /usr/local/bin/backup-scripts/gotify.env
 
 BACKUP_APPDATA_CHECK=false
+BACKUP_DASHCAM_CHECK=false
 BACKUP_TITLE_APPDATA="Restic appdata backup"
+BACKUP_TITLE_DASHCAM="Restic dashcam backup"
 LOG_FILE="/usr/local/bin/backup-scripts/backup.log"
 PRIORITY=5
 
@@ -13,7 +15,7 @@ PRIORITY=5
 restic -r /mnt/exdisk/restic-appdata --verbose unlock
 
 # Sync local and remote repos
-rclone sync --verbose /mnt/exdisk/restic-appdata/ mybackblaze:restic-appdata-mnfll/
+rclone sync --verbose /mnt/exdisk/restic-appdata/ mymegadrive:restic-appdata-mnfll
 
 # Check the exit status of rclone
 if [ $? -eq 0 ]; then
@@ -24,7 +26,22 @@ else
     echo "$(date +'%Y-%m-%d %H:%M:%S') - $BACKUP_TITLE_APPDATA was not successful." >> "$LOG_FILE"
 fi
 
-if [ "$BACKUP_APPDATA_CHECK" = true ]; then
+# Manually unlock repo
+restic -r /mnt/exdisk/restic-dashcam --verbose unlock
+
+# Sync local and remote repos
+rclone sync --verbose /mnt/exdisk/restic-dashcam/ mymegadrive:restic-dashcam-mnfll
+
+# Check the exit status of rclone
+if [ $? -eq 0 ]; then
+    # Append custom text to output.log
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $BACKUP_TITLE_DASHCAM was successful." >> "$LOG_FILE"
+    BACKUP_DASHCAM_CHECK=true
+else
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $BACKUP_TITLE_DASHCAM was not successful." >> "$LOG_FILE"
+fi
+
+if [ "$BACKUP_APPDATA_CHECK" = true ] && [ "$BACKUP_DASHCAM_CHECK" = true ]; then
     TITLE="Backup Successful"
     MESSAGE="Your data has been successfully backed up."
 else
@@ -37,5 +54,5 @@ curl -s -S --data '{"message": "'"${MESSAGE}"'", "title": "'"${TITLE}"'", "prior
 # Check if it's Sunday
 if [ "$(date +'%u')" = "7" ]; then
     # Prune restic snapshots
-    ./backup_housekeeping.sh
+    ./pi_backup_housekeeping.sh
 fi
