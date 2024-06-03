@@ -1,30 +1,42 @@
 #!/bin/bash
 
 # Source the .env file to set the environment variables
-source /usr/local/bin/backup-scripts/restic.env
 source /usr/local/bin/backup-scripts/gotify.env
 
 CLEANUP_APPDATA_CHECK=false
+CLEANUP_DASHCAM_CHECK=false
+PRUNE_TITLE_APPDATA="Restic appdata prune"
+PRUNE_TITLE_DASHCAM="Restic dashcam prune"
 LOG_FILE="/usr/local/bin/backup-scripts/housekeeping.log"
 PRIORITY=5
 
-# Manually unlock repo
-restic -r /mnt/exdisk/nucleus-restic-appdata --verbose unlock
-
 # Removing snapshots according to a policy
-restic -r /mnt/exdisk/nucleus-restic-appdata --verbose forget --keep-last 1 --keep-daily 7 --keep-weekly 4 --prune
+restic -r /mnt/exdisk/nucleus-restic-appdata --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-appdata.env forget --keep-last 1 --keep-daily 7 --keep-weekly 4 --prune
 
 # Check the exit status
 if [ $? -eq 0 ]; then
     # Append custom text to output.log
-    echo "$(date +'%Y-%m-%d %H:%M:%S') - Restic appdata forget and prune were successful." >> "$LOG_FILE"
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $PRUNE_TITLE_APPDATA was successful." >> "$LOG_FILE"
     CLEANUP_APPDATA_CHECK=true
 else
-    echo "$(date +'%Y-%m-%d %H:%M:%S') - Restic appdata forget and prune were not successful." >> "$LOG_FILE"
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $PRUNE_TITLE_APPDATA was not successful." >> "$LOG_FILE"
 
 fi
 
-if [ "$CLEANUP_APPDATA_CHECK" = true ]; then
+# Removing snapshots according to a policy
+restic -r /mnt/exdisk/nucleus-restic-dashcam --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-dashcam.env forget --keep-last 1 --keep-daily 7 --keep-weekly 4 --prune
+
+# Check the exit status
+if [ $? -eq 0 ]; then
+    # Append custom text to output.log
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $PRUNE_TITLE_DASHCAM was successful." >> "$LOG_FILE"
+    CLEANUP_DASHCAM_CHECK=true
+else
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $PRUNE_TITLE_DASHCAM was not successful." >> "$LOG_FILE"
+
+fi
+
+if [ "$CLEANUP_APPDATA_CHECK" = true ] && [ "$CLEANUP_DASHCAM_CHECK" = true ]; then
     TITLE="Nucleus Housekeeping Successful"
     MESSAGE="The housekeeping process was completed successfully."
 else

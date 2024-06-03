@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Source the .env file to set environment variables
-source /usr/local/bin/backup-scripts/restic.env
 source /usr/local/bin/backup-scripts/gotify.env
 
 BACKUP_APPDATA_CHECK=false
@@ -12,7 +11,7 @@ LOG_FILE="/usr/local/bin/backup-scripts/backup.log"
 PRIORITY=5
 
 # Manually unlock repo
-restic -r /mnt/exdisk/nucleus-restic-appdata --verbose unlock
+restic -r /mnt/exdisk/nucleus-restic-appdata --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-appdata.env unlock
 
 # Sync local and remote repos
 rclone sync --verbose /mnt/exdisk/nucleus-restic-appdata/ mymegadrive:nucleus-restic-appdata
@@ -27,7 +26,7 @@ else
 fi
 
 # Manually unlock repo
-restic -r /mnt/exdisk/nucleus-restic-dashcam --verbose unlock
+restic -r /mnt/exdisk/nucleus-restic-dashcam --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-dashcam.env unlock
 
 # Sync local and remote repos
 rclone sync --verbose /mnt/exdisk/nucleus-restic-dashcam/ mymegadrive:nucleus-restic-dashcam
