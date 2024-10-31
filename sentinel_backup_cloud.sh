@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Source the .env file to set environment variables
-source /usr/local/bin/backup-scripts/restic.env
 source /usr/local/bin/backup-scripts/gotify.env
 
 BACKUP_APPDATA_CHECK=false
@@ -9,11 +8,11 @@ BACKUP_TITLE_APPDATA="Restic appdata backup"
 LOG_FILE="/usr/local/bin/backup-scripts/backup.log"
 PRIORITY=5
 
-# Manually unlock repo
-restic -r /mnt/backups/sentinel-restic-appdata --verbose unlock
+# Stop all running Docker containers
+docker stop $(docker ps -q)
 
-# Sync local and remote repos
-rclone sync --verbose /mnt/backups/sentinel-restic-appdata/ mymegadrive:sentinel-restic-appdata
+# Backup to remote repo
+restic backup /mnt/docker -r rclone:mymegadrive:sentinel-restic-appdata -v --password-file /usr/local/bin/backup-scripts/sentinel-restic-appdata-password.txt
 
 # Check the exit status of rclone
 if [ $? -eq 0 ]; then
@@ -32,6 +31,10 @@ else
     MESSAGE="There was an issue with the backup process. Please check the logs for more details."
 fi
 
+# Start all Docker containers
+docker start $(docker ps -a -q -f "status=exited")
+
+# Send message to gotify
 curl -s -S --data '{"message": "'"${MESSAGE}"'", "title": "'"${TITLE}"'", "priority":'"${PRIORITY}"', "extras": {"client::display": {"contentType": "text/markdown"}}}' -H 'Content-Type: application/json' "$URL"
 
 # Check if it's Sunday
