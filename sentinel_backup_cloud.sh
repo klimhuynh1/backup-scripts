@@ -12,7 +12,7 @@ PRIORITY=5
 docker stop $(docker ps -q)
 
 # Backup to remote repo
-restic backup /mnt/docker -r rclone:mymegadrive:sentinel-restic-appdata -v --password-file /usr/local/bin/backup-scripts/sentinel-restic-appdata-password.txt
+restic backup /opt/appdata -r rclone:mymegadrive:sentinel-restic-appdata -v --password-file /usr/local/bin/backup-scripts/sentinel-restic-appdata-password.txt
 
 # Check the exit status of rclone
 if [ $? -eq 0 ]; then
