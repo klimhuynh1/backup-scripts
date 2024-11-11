@@ -11,8 +11,10 @@ PRIORITY=5
 # Stop all running Docker containers
 docker stop $(docker ps -q)
 
+# Manually unlock repo
+restic -r rclone:mymegadrive:sentinel-restic-appdata --verbose --password-file /usr/local/bin/backup-scripts/sentinel-restic-appdata-password.txt unlock
 # Backup to remote repo
-restic backup /opt/appdata -r rclone:mymegadrive:sentinel-restic-appdata -v --password-file /usr/local/bin/backup-scripts/sentinel-restic-appdata-password.txt
+restic backup /opt/appdata -r rclone:mymegadrive:sentinel-restic-appdata --verbose --password-file /usr/local/bin/backup-scripts/sentinel-restic-appdata-password.txt
 
 # Check the exit status of rclone
 if [ $? -eq 0 ]; then
