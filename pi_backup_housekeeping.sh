@@ -10,6 +10,9 @@ PRUNE_TITLE_DASHCAM="Restic dashcam prune"
 LOG_FILE="/usr/local/bin/backup-scripts/housekeeping.log"
 PRIORITY=5
 
+# Manually unlock repo
+restic -r /mnt/exdisk/nucleus-restic-appdata --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-appdata-password.txt unlock
+
 # Removing snapshots according to a policy
 restic -r /mnt/exdisk/nucleus-restic-appdata --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-appdata-password.txt forget --keep-last 1 --keep-daily 5 --keep-weekly 2 --keep-monthly 3 --prune
 
@@ -23,6 +26,8 @@ else
 
 fi
 
+# Manually unlock repo
+restic -r /mnt/exdisk/nucleus-restic-dashcam --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-dashcam.txt unlock
 # Removing snapshots according to a policy
 restic -r /mnt/exdisk/nucleus-restic-dashcam --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-dashcam.txt forget --keep-last 1 --keep-daily 5 --keep-weekly 2 --keep-monthly 3 --prune
 
@@ -36,6 +41,8 @@ else
 
 fi
 
+# Manually unlock repo
+restic -r /mnt/exdisk/nucleus-restic-temp --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-temp.txt unlock
 # Removing snapshots according to a policy
 restic -r /mnt/exdisk/nucleus-restic-temp --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-temp.txt forget --keep-last 1 --keep-daily 5 --keep-weekly 2 --keep-monthly 3 --prune
 
