@@ -14,7 +14,7 @@ PRIORITY=5
 restic -r /mnt/exdisk/nucleus-restic-appdata --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-appdata-password.txt unlock
 
 # Removing snapshots according to a policy
-restic -r /mnt/exdisk/nucleus-restic-appdata --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-appdata-password.txt forget --keep-daily 7 --keep-weekly 2 --keep-monthly 12 --keep-yearly 5 --prune
+restic -r /mnt/exdisk/nucleus-restic-appdata --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-appdata-password.txt forget --keep-last 1 --keep-daily 7 --keep-weekly 2 --keep-monthly 12 --keep-yearly 5 --prune
 
 # Check the exit status
 if [ $? -eq 0 ]; then
@@ -29,7 +29,7 @@ fi
 # Manually unlock repo
 restic -r /mnt/exdisk/nucleus-restic-dashcam --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-dashcam.txt unlock
 # Removing snapshots according to a policy
-restic -r /mnt/exdisk/nucleus-restic-dashcam --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-dashcam.txt forget --keep-daily 7 --keep-weekly 2 --keep-monthly 6 --prune
+restic -r /mnt/exdisk/nucleus-restic-dashcam --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-dashcam.txt forget --keep-last 1 --keep-daily 7 --keep-weekly 2 --keep-monthly 6 --prune
 
 # Check the exit status
 if [ $? -eq 0 ]; then
@@ -44,7 +44,7 @@ fi
 # Manually unlock repo
 restic -r /mnt/exdisk/nucleus-restic-temp --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-temp.txt unlock
 # Removing snapshots according to a policy
-restic -r /mnt/exdisk/nucleus-restic-temp --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-temp.txt forget --keep-daily 7 --keep-weekly 2 --keep-monthly 6 --prune
+restic -r /mnt/exdisk/nucleus-restic-temp --verbose --password-file /usr/local/bin/backup-scripts/nucleus-restic-temp.txt forget --keep-last 1 --keep-daily 7 --keep-weekly 2 --keep-monthly 6 --prune
 
 # Check the exit status
 if [ $? -eq 0 ]; then
